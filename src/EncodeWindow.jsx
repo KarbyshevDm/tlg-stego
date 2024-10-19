@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
-import { Button,  Image,  Input, message, Upload } from 'antd';
+import { Button,  Divider,  Image,  Input, message, Upload } from 'antd';
 import { decryptText, encryptText } from './cryptFunctions';
 import { upload } from '@testing-library/user-event/dist/upload';
 const { TextArea } = Input;
@@ -17,7 +17,9 @@ export const  EncodeWindow = () =>{
    const [uploading, setUploading] = useState(false);
    const [previewOpen, setPreviewOpen] = useState(false);
    const [previewImage, setPreviewImage] = useState('');
-   
+   const [resultImage,setResultImage] = useState('');
+   const [resultOpen, setResultOpen] = useState(false);
+
    const downloadImage = (url) => {
     const a = document.createElement('a');
     a.href = url;
@@ -66,7 +68,12 @@ export const  EncodeWindow = () =>{
      
       let data = ctx.getImageData(0, 0, canvas.width, canvas.height);
       let index = 0;
-
+      
+       if (encryptedBinary.length > data.data.length/4){
+         message.error('Длина текста не соответствует размеру изображения.');
+       setUploading(false);
+       return;
+       }
       for (let i = 0; i < data.data.length && index < encryptedBinary.length; i += 4) {
         data.data[i] = (data.data[i] & ~1) | parseInt(encryptedBinary[index]);
         index++;
@@ -74,6 +81,8 @@ export const  EncodeWindow = () =>{
 
       ctx.putImageData(data, 0, 0);
       const newImageUrl = canvas.toDataURL();
+      setResultImage(newImageUrl);
+      setResultOpen(true);
       downloadImage(newImageUrl);
     };
   
@@ -105,7 +114,7 @@ export const  EncodeWindow = () =>{
     file,
   };
 
-  const handlePreview = async (files) => {
+  const handlePreview = async () => {
     // if (!file.url && !file.preview) {
     //   file.preview = await getBase64(file.originFileObj);
     // }
@@ -134,6 +143,7 @@ export const  EncodeWindow = () =>{
 
   return (
     <>
+    <Divider />
      <TextArea
         value={text}
         onChange={(e) => setText(e.target.value)}
@@ -143,8 +153,10 @@ export const  EncodeWindow = () =>{
           maxRows: 5,
         }}
       />
+      <Divider />
       <Input.Password value={password}
         onChange={(e) => setPassword(e.target.value)} placeholder="Пароль" />
+      <Divider />
       <Upload listType="picture-card" onPreview={handlePreview} {...props} onDownload={(file)=>{
       }} maxCount={1}>
         <button
@@ -164,6 +176,7 @@ export const  EncodeWindow = () =>{
       </div>
     </button>
       </Upload>
+      <Divider />
       {previewImage && (
         <Image
           wrapperStyle={{
@@ -177,6 +190,7 @@ export const  EncodeWindow = () =>{
           src={previewImage}
         />
       )}
+      <Divider />
       <Button
         type="primary"
         onClick={handleUpload}
@@ -188,6 +202,20 @@ export const  EncodeWindow = () =>{
       >
         {uploading ? 'Выгружается' : 'Зашифровать текст в изображение'}
       </Button>
+      <Divider />
+      {/* {resultImage && ( */}
+        <Image
+          // wrapperStyle={{
+          //   display: 'none',
+          // }}
+          // preview={{
+          //   visible: resultImage,
+          //   onVisibleChange: (visible) => setResultOpen(visible),
+          //   afterOpenChange: (visible) => !visible && setResultImage(''),
+          // }}
+          src={resultImage}
+        />
+      {/* )} */}
     </>
   );
 
