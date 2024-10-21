@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
-import { Button,  Image,  Input, message, Upload } from 'antd';
+import { Button,  Divider,  Image,  Input, message, Upload } from 'antd';
 import { decryptText, encryptText } from './cryptFunctions';
 import { upload } from '@testing-library/user-event/dist/upload';
 const { TextArea } = Input;
@@ -119,8 +119,8 @@ export const  DecodeWindow = () =>{
     <>
       <Input.Password value={password}
         onChange={(e) => setPassword(e.target.value)} placeholder="Пароль" />
-      <Upload listType="picture-card" onPreview={handlePreview} {...props} onDownload={(file)=>{
-      }} maxCount={1}>
+        <Divider />
+      <Upload listType="picture-card" onPreview={handlePreview} {...props} maxCount={1}>
         <button
       style={{
         border: 0,
@@ -128,6 +128,7 @@ export const  DecodeWindow = () =>{
       }}
       type="button"
     >
+      
       <PlusOutlined />
       <div
         style={{
@@ -138,6 +139,7 @@ export const  DecodeWindow = () =>{
       </div>
     </button>
       </Upload>
+      <Divider />
       {previewImage && (
         <Image
           wrapperStyle={{
@@ -151,6 +153,7 @@ export const  DecodeWindow = () =>{
           src={previewImage}
         />
       )}
+      <Divider />
       <Button
         type="primary"
         onClick={handleUpload}
@@ -162,6 +165,7 @@ export const  DecodeWindow = () =>{
       >
         {uploading ? 'Загружается' : 'Дешифровать'}
       </Button>
+      <Divider />
       <TextArea
         value={text}
         onChange={(e) => setText(e.target.value)}

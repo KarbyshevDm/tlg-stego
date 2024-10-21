@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
 import { Button,  Divider,  Image,  Input, message, Upload } from 'antd';
-import { decryptText, encryptText } from './cryptFunctions';
+import {  encryptText } from './cryptFunctions';
 import { upload } from '@testing-library/user-event/dist/upload';
 const { TextArea } = Input;
 
@@ -18,8 +18,7 @@ export const  EncodeWindow = () =>{
    const [previewOpen, setPreviewOpen] = useState(false);
    const [previewImage, setPreviewImage] = useState('');
    const [resultImage,setResultImage] = useState('');
-   const [resultOpen, setResultOpen] = useState(false);
-
+   
    const downloadImage = (url) => {
     const a = document.createElement('a');
     a.href = url;
@@ -82,7 +81,6 @@ export const  EncodeWindow = () =>{
       ctx.putImageData(data, 0, 0);
       const newImageUrl = canvas.toDataURL();
       setResultImage(newImageUrl);
-      setResultOpen(true);
       downloadImage(newImageUrl);
     };
   
@@ -91,10 +89,7 @@ export const  EncodeWindow = () =>{
     setUploading(false);
   };
   const props = {
-    onRemove: (file) => {
-      //const index = fileList.indexOf(file);
-      //const newFileList = fileList.slice();
-      //newFileList.splice(index, 1);
+    onRemove: () => {
       setFile(null);
     },
     beforeUpload: (file) => {
@@ -121,29 +116,11 @@ export const  EncodeWindow = () =>{
     setPreviewImage(imageFile);
     setPreviewOpen(true);
   };
-  const uploadButton = (
-    <button
-      style={{
-        border: 0,
-        background: 'none',
-      }}
-      type="button"
-    >
-      <PlusOutlined />
-      <div
-        style={{
-          marginTop: 8,
-        }}
-      >
-        Upload
-      </div>
-    </button>
-  );
+ 
 
 
   return (
     <>
-    <Divider />
      <TextArea
         value={text}
         onChange={(e) => setText(e.target.value)}
