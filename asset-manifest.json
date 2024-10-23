@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/tlg-stego/static/css/main.7aa54119.css",
-    "main.js": "/tlg-stego/static/js/main.7c4d49d7.js",
+    "main.js": "/tlg-stego/static/js/main.f7344fbe.js",
     "static/js/453.e34bfc63.chunk.js": "/tlg-stego/static/js/453.e34bfc63.chunk.js",
     "index.html": "/tlg-stego/index.html",
     "main.7aa54119.css.map": "/tlg-stego/static/css/main.7aa54119.css.map",
-    "main.7c4d49d7.js.map": "/tlg-stego/static/js/main.7c4d49d7.js.map",
+    "main.f7344fbe.js.map": "/tlg-stego/static/js/main.f7344fbe.js.map",
     "453.e34bfc63.chunk.js.map": "/tlg-stego/static/js/453.e34bfc63.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.7aa54119.css",
-    "static/js/main.7c4d49d7.js"
+    "static/js/main.f7344fbe.js"
   ]
 }
