@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Layout, Menu, Typography, ConfigProvider, Button, Drawer, Switch } from "antd";
 import { EncodeWindow } from "./EncodeWindow";
 import { DecodeWindow } from "./DecodeWindow";
 import "./App.css"
+import { init, isTMA } from "@telegram-apps/sdk";
+import { useLaunchParams } from "@telegram-apps/sdk-react";
+
+//import TelegramContext from './hooks/telegramContext';
+
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
@@ -23,12 +28,25 @@ const telegramColors = {
 
 const App = () => {
   const [theme, setTheme] = useState("light");
-  const [switchTheme, setSwithTheme] = useState(true);
-
 
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
+
+  const [istTg,setIsTg] = useState()
+  //const lp = useLaunchParams()
+   useEffect(  ()=>{
+     isTMA().then(
+      (res)=>{
+
+        setIsTg(res);
+      },()=>{
+        setIsTg(false);
+      }
+     );
+   
+
+   },[])
 
   const items = [
     {
@@ -58,37 +76,41 @@ const App = () => {
         components:{
           Menu:{
             horizontalItemSelectedColor: telegramColors[theme].text,
-            //itemColor: telegramColors[theme].text,
             itemBg: telegramColors[theme].primary,
           darkItemBg:telegramColors[theme].primary,
             itemHoverColor: telegramColors[theme].text,
           },
           Button:{
             primaryShadow: "0 0",
+          },
+          Upload:{
+            colorText: telegramColors[theme].text,
+            colorTextDescription: telegramColors[theme].text
           }
+          
         }
       }}
     >
+      <script src="https://telegram.org/js/telegram-web-app.js"></script>
       <Layout
         style={{
           minHeight: "100vh",
           background: telegramColors[theme].background,
         }}
       >
+    
         <Header className="header" style={{ background: telegramColors[theme].primary }}>
         <div className="header-content">
-          <Title level={3} style={{ color: telegramColors[theme].text, margin: 0}}>Стего </Title>
+          <Title level={3} style={{ color: telegramColors[theme].text, margin: 0}}>Стего {istTg?"is Tg":"is not tg"}</Title>
           <Menu
             theme={theme}
             onClick={onClick}
             className="desktop-menu"
             style={{
-              //color: telegramColors[theme].text,
               flex: "auto",
               collapsedWidth:40,
               minWidth: 20,
-              //background: telegramColors[theme].primary,
-            }}
+              }}
             selectedKeys={[current]}
             mode="horizontal"
             items={items}
